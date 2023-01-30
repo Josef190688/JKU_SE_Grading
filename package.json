@@ -1,0 +1,144 @@
+{
+    "name": "grading",
+    "displayName": "grading",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.73.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:grading.helloWorld"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "JKU-Notebook-Grading",
+                    "title": "JKU-Notebook-Grading",
+                    "icon": "&(list-ordered)"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "treeItem.changeAchievablePoints",
+                "title": "change achievable points"
+            },
+            {
+                "command": "treeItem.changeTotalAchievablePoints",
+                "title": "change total achievable points"
+            },
+            {
+                "command": "treeItem.gradeExercise",
+                "title": "grade this exercise"
+            },
+            {
+                "command": "treeItem.removeGrade",
+                "title": "remove grade from this exercise"
+            },
+            {
+                "command": "solutions.noSolution",
+                "title": "no solution implemented, please handle manually"
+            },
+            {
+                "command": "solutions.addAssignmentCell",
+                "title": "add assignment-cell"
+            },
+            {
+                "command": "solutions.addGradingTableCell",
+                "title": "add grading-table-cell"
+            }
+        ],
+        "views": {
+            "explorer": [
+                {
+                    "id": "JKU Grading for Lecturers",
+                    "name": "JKU Grading for Lecturers"
+                },
+                {
+                    "id": "JKU Grading for Tutors",
+                    "name": "JKU Grading for Tutors"
+                }
+            ]
+        },
+        "menus": {
+            "view/item/context": [
+              {
+                "command": "treeItem.changeTotalAchievablePoints",
+                "when": "view == JKU Grading for Lecturers && viewItem == maxPointsAssignment"
+              },
+              {
+                "command": "treeItem.changeAchievablePoints",
+                "when": "view == JKU Grading for Lecturers && viewItem == exercise"
+              },
+              {
+                "command": "treeItem.gradeExercise",
+                "when": "view == JKU Grading for Tutors && viewItem == exercise"
+              },
+              {
+                "command": "treeItem.removeGrade",
+                "when": "view == JKU Grading for Tutors && viewItem == exercise"
+              },
+              {
+                "command": "solutions.addAssignmentCell",
+                "when": "viewItem == assignmentNotFound"
+              },
+              {
+                "command": "solutions.addGradingTableCell",
+                "when": "viewItem == gradingTableNotFound"
+              },
+              {
+                "command": "solutions.noSolution",
+                "when": "viewItem == gradingTableNumberingError"
+              }
+            ]
+          },
+          "configuration": {
+            "assignmentCell": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "number",
+                    "description": "Assignment Number (Number)"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Assignment Title (String)"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Assignment ID (String)"
+                  }
+                }
+              }
+          }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.0.0",
+        "@types/mocha": "^10.0.0",
+        "@types/node": "16.x",
+        "@types/vscode": "^1.73.0",
+        "@typescript-eslint/eslint-plugin": "^5.42.0",
+        "@typescript-eslint/parser": "^5.42.0",
+        "@vscode/test-electron": "^2.2.0",
+        "eslint": "^8.26.0",
+        "glob": "^8.0.3",
+        "mocha": "^10.1.0",
+        "typescript": "^4.8.4"
+    },
+    "dependencies": {
+        "jupyter": "^0.0.0"
+    }
+}
