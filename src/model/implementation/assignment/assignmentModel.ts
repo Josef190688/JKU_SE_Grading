@@ -176,6 +176,41 @@ export class AssignmentModel {
         }
     }
 
+    public getTutorName(): string {
+        let name = '';
+        vscode.window.activeNotebookEditor?.notebook.getCells()?.forEach(cell => {
+            if (cell.metadata?.custom?.metadata?.exercise_data === 'tutor') {
+                const nameRegex = /\*\*Tutor:\*\*[\s]*(.*)/;
+                const nameMatch = cell.document.getText().match(nameRegex);
+                if (nameMatch && nameMatch[1]) {
+                    name = nameMatch[1];
+                }
+            }
+        });
+        return name;
+    }
+
+    public async setTutorName(name: string) {
+        vscode.window.activeNotebookEditor?.notebook.getCells()?.forEach(async cell => {
+            if (cell.metadata?.custom?.metadata?.exercise_data === 'tutor') {
+                let newCell = new vscode.NotebookCellData(
+                    cell.kind,
+                    "**Tutor:** " + name,
+                    cell.document.languageId
+                );
+                newCell.metadata = cell.metadata;
+                // Änderungen werden ins Notebook geschrieben
+                const edit = new vscode.WorkspaceEdit();
+                const nbEdit = vscode.NotebookEdit.replaceCells(
+                    new vscode.NotebookRange(cell.index, cell.index + 1),
+                    [newCell]);
+                if (vscode.window.activeNotebookEditor) {
+                    edit.set(vscode.window.activeNotebookEditor?.notebook.uri, [nbEdit]);
+                    await vscode.workspace.applyEdit(edit);
+                }
+            }
+        });
+    }
 
 }
 

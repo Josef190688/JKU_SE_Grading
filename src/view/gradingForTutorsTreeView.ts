@@ -4,7 +4,7 @@ import { GradingModel } from '../model/model_access/gradingModel';
 import { Exercise, ParentExercise } from '../model/implementation/exercises/exerciseModel';
 
 export enum TreeItemType {
-	assignment, parentExercise, exercise, leftToGrade
+	assignment, parentExercise, exercise, leftToGrade, tutorName
 }
 
 export class TreeItem {
@@ -35,6 +35,7 @@ export class GradingForTutorsProvider implements vscode.TreeDataProvider<TreeIte
 		try {
 			vscode.commands.registerCommand('treeItem.gradeExercise', item => this.gradeExercise(item));
 			vscode.commands.registerCommand('treeItem.removeGrade', item => this.removeGrade(item));
+			vscode.commands.registerCommand('treeItem.setTutorName', item => this.setTutorName());
 		} catch (error) {
 
 		}
@@ -67,6 +68,13 @@ export class GradingForTutorsProvider implements vscode.TreeDataProvider<TreeIte
 					label: item.label,
 					collapsibleState: vscode.TreeItemCollapsibleState.None,
 					iconPath: item.iconPath
+				};
+			}
+			case TreeItemType.tutorName: {
+				return {
+					label: item.label,
+					collapsibleState: vscode.TreeItemCollapsibleState.None,
+					contextValue: "tutorName"
 				};
 			}
 		}
@@ -168,6 +176,13 @@ export class GradingForTutorsProvider implements vscode.TreeDataProvider<TreeIte
 				);
 				treeItem.iconPath = path;
 				children.push(treeItem);
+				// Tutor-Name
+				treeItem = new TreeItem(
+					"Tutor: " + grading.assignment.getTutorName(),
+					-1,
+					TreeItemType.tutorName
+				);
+				children.push(treeItem);
 			} else if (item.type === TreeItemType.parentExercise) {
 				// die Kinder an ein ParentExercise anhängen
 				grading.exercises.getExercises().forEach(exercise => {
@@ -226,6 +241,15 @@ export class GradingForTutorsProvider implements vscode.TreeDataProvider<TreeIte
 		if (exercise && exercise.exercisePoints.maxPoints !== undefined) {
 			await exercise.setMaxPoints(exercise.exercisePoints.maxPoints);
 			await grading.gradingTable.buildGradingTableAndApplyToNotebook();
+		}
+    }
+
+	private async setTutorName() {
+		let result = await vscode.window.showInputBox({
+			placeHolder: "Enter your name"
+		});
+		if (result) {
+			await grading.assignment.setTutorName(result);
 		}
     }
 }
