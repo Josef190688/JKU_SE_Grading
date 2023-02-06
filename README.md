@@ -4,4 +4,4 @@ JKU Grading für Jupyter Notebooks ist eine Visual-Studio-Code-Erweiterung, die 
 
 ## Installation
 
-Das Projekt kann in einen beliebigen Ordner geladen werden, indem man die commandline öffnet, dort zum Pfad navigiert, an dem man es ablegen möchte, und anschließend den Befehl ```git clone ```
+Das Projekt kann in einen beliebigen Ordner geladen werden, indem man die commandline öffnet, dort zum Pfad navigiert, an dem man es ablegen möchte, und anschließend den Befehl ```git clone https://github.com/Josef190688/JKU_SE_Grading.git``` eingibt. Sollte das Projekt mehrere Branches haben, kann man den jeweiligen Branch mit dem Befehl "--branch <branch>" auswählen, zB: ```git clone --branch main https://github.com/Josef190688/JKU_SE_Grading.git```
