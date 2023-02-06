@@ -10,6 +10,6 @@ Das Projekt kann in einen beliebigen Ordner geladen werden, indem man die comman
 
 zB: ```git clone --branch main https://github.com/Josef190688/JKU_SE_Grading.git```
   
-Anschließend öffnet man das Projekt in Visual Studio Code und öffnet dort ein Terminal unter "Terminal" - "Neues Terminal". Dort gibt man den Befehl "npm install" ein.
+Anschließend öffnet man das Projekt in Visual Studio Code und öffnet dort ein Terminal unter "Terminal" - "Neues Terminal". Dort gibt man den Befehl ```npm install``` ein.
 
 Mit "Ausführen" - "Debugging starten" startet man die Erweiterung schließlich.
