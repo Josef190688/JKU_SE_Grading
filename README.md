@@ -1,4 +1,4 @@
-# grading README
+# JKU Grading für Jupyter Notebooks README
 
 This is the README for your extension "grading". After writing up a brief description, we recommend including the following sections.
 
