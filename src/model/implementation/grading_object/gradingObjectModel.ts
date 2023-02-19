@@ -55,11 +55,9 @@ export class GradingObjectModel {
 
         function extractMetadataWithoutGrading(metadata: any) {
             let newMetadata = {...metadata};
-            let assignment = metadata.grading?.assignment || metadata.assignment;
             let assignment_id = metadata.grading?.assignment_id || metadata.assignment_id;
             let submissiondate = metadata.grading?.submissiondate || metadata.submissiondate;
             delete newMetadata.grading;
-            newMetadata.assignment = assignment;
             newMetadata.assignment_id = assignment_id;
             newMetadata.submissiondate = submissiondate;
             return newMetadata;
@@ -87,7 +85,7 @@ export class GradingObjectModel {
 
     public async buildGradingObject() {
         if (this.results && this.assignmentModel) {
-            const assignment = this.metadataWithoutGrading?.assignment ? this.metadataWithoutGrading.assignment : '';
+            const assignment = this.assignmentModel.getTitle();
             const assignmentId = this.metadataWithoutGrading?.assignment_id ? this.metadataWithoutGrading.assignment_id : '';
             const grading = new Grading(
                 assignment,

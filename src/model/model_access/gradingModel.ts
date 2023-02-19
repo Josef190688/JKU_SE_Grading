@@ -99,11 +99,13 @@ export class GradingModel {
       if (JSON.stringify(Array.from(this.gradingTable.getExercisePoints())) !== JSON.stringify(Array.from(gradingTableModel.getExercisePoints()))) {
         // dann passe die Exercises dazu an
         await writeResultPointsFromGradingTableToExercises(this.gradingTable);
+        await updateGradingObject();
       }
       // Exercises haben sich verändert?
       else if (JSON.stringify(Array.from(this.exercises.getExercisePoints())) !== JSON.stringify(Array.from(exerciseModel.getExercisePoints()))) {
         // dann passe die GradingTable dazu an
         await gradingTableModel.buildGradingTableAndApplyToNotebook();
+        await updateGradingObject();
       }
 
       async function writeResultPointsFromGradingTableToExercises(oldGradingTableModel: GradingTableModel) {
@@ -134,9 +136,21 @@ export class GradingModel {
 	        }
         } catch (error) { }
       }
+
+      async function updateGradingObject() {
+        let gradingObject = new GradingObjectModel();
+        if (new ExerciseModel().getNumberOfExercisesLeftToGrade() === 0) {
+          gradingObject.buildGradingObject();
+        } else {
+          gradingObject.removeGradingObject();
+        }
+      }
+
     } catch (error) { }
   }
 }
+
+
 
 
 

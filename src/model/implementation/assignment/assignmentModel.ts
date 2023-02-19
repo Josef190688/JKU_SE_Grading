@@ -1,10 +1,6 @@
 import * as vscode from 'vscode';
 import { AbstractGradingError } from '../../../exception_handling/exception_abstraction/AbstractGradingError';
 import { AssignmentNotFoundError } from '../../../exception_handling/exception_implementation/assignmentNotFoundError';
-import { GradingModel } from '../../model_access/gradingModel';
-import { ExerciseModel } from '../exercises/exerciseModel';
-import { GradingObjectModel } from '../grading_object/gradingObjectModel';
-import { GradingTableModel } from '../grading_table/gradingTableModel';
 
 /**
  * Die Klasse AssigmentModel verwaltet den Zugriff
@@ -38,32 +34,24 @@ export class AssignmentModel {
 	            if (hasProperty(cell.metadata?.custom?.metadata, 'assignment_id')) {
 	                foundCell = cell;
 	                let text = cell.document.getText();
-	                // Der Titel wird aus "assignment" in den Metadaten ermittelt
-	                if (cell.metadata?.custom?.metadata?.assignment) {
-	                    this.title = cell.metadata.custom.metadata.assignment;
-	                }
-	                // Wenn "assignment" in den Metadaten nicht vorhanden ist,
-	                // wird der Titel aus dem Zellen-Inhalt gelesen
-	                else if (text.includes('# Assignment') && text.indexOf('\n') !== -1) {
-	                    this.title = text.substring(text.indexOf('Assignment'), text.indexOf('\n', text.indexOf('Assignment')) - 1);
+	                // Der Titel wird aus dem Zellen-Inhalt gelesen
+	                if (text.includes('# Assignment') && text.indexOf('\n') !== -1) {
+	                    this.title = text.substring(text.indexOf('Assignment'), text.indexOf('\n', text.indexOf('Assignment')));
 	                }
 	                else if (text.includes('# Assignment')) {
 	                    this.title = text.substring(text.indexOf('Assignment'));
 	                }
 	                else if (text.includes('# Übung') && text.indexOf('\n') !== -1) {
-	                    this.title = text.substring(text.indexOf('Übung'), text.indexOf('\n', text.indexOf('Übung')) - 1);
+	                    this.title = text.substring(text.indexOf('Übung'), text.indexOf('\n', text.indexOf('Übung')));
 	                }
 	                else if (text.includes('# Übung')) {
 	                    this.title = text.substring(text.indexOf('Übung'));
 	                }
-	                // Wenn auch hier nichts gefunden wird,
-	                // wird Titel aus "assignment_id" in den Metadaten ermittelt
+	                // Wenn der Titel aus dem Zellen-Inhalt nicht gelesen werden kann,
+	                // wird der Titel aus "assignment_id" in den Metadaten ermittelt
 	                else {
 	                    this.title = cell.metadata.custom.metadata.assignment_id;
 	                }
-                    if (hasProperty(cell.metadata?.custom?.metadata, 'max_points_assignment')) {
-                        
-                    }
 	                return true;
 	            }
 	        });
